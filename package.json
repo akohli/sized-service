@@ -1,0 +1,14 @@
+{
+  "name": "sized-service",
+  "version": "0.0.1",
+  "description": "Web service with specific URIs to return data of specific size",
+  "main": "sized.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Apache",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
