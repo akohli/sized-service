@@ -15,7 +15,7 @@ var fs = require('fs');
 var http = require('http');
 var https = require('https')
 
-var keystore = fs.readFileSync('keys2/keystore.pkcs12');
+var keystore = fs.readFileSync('certs/certs.config');
 var passphrase = fs.readFileSync('config/config', 'utf8');
 var credentials = {pfx: keystore, passphrase: passphrase};
 
