@@ -9,6 +9,19 @@
 var express = require('express')
 var app = express()
 
+
+
+var fs = require('fs');
+var http = require('http');
+var https = require('https')
+
+var keystore = fs.readFileSync('certs/certs.config');
+var passphrase = fs.readFileSync('config/config', 'utf8');
+var credentials = {pfx: keystore, passphrase: passphrase};
+
+
+
+
 var listen_port_http = 8001
 var listen_port_https = 9001
 
@@ -60,5 +73,10 @@ app.get('/sized/:sz', function (request, response) {
   }
 })
 
-app.listen(listen_port_http)
-console.log('Now listening port ' + listen_port_http)
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(listen_port_http);
+httpsServer.listen(listen_port_https);
+
+console.log('Now listening port ' + listen_port_http + 'for http and port' +listen_port_https+ 'for https' )
