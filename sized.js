@@ -21,6 +21,9 @@ var app = express()
 
 
 
+
+
+
 var fs = require('fs');
 var http = require('http');
 //var https = require('https')
@@ -28,9 +31,6 @@ var http = require('http');
 //var keystore = fs.readFileSync('certs/certs.config');
 //var passphrase = fs.readFileSync('config/config', 'utf8');
 //var credentials = {pfx: keystore, passphrase: passphrase};
-
-
-
 
 
 
@@ -94,8 +94,39 @@ app.post('/resultsupload', type , function (req, res, next) {
 //  req.file //is the `avatar` file
 // req.body will hold the text fields, if there were any
 
-   
- console.log(req.file.path);
+console.log(req.file.path);
+
+fs.rename(''+req.file.path ,'uploads/'+(new Date().toISOString() )+".txt" , function(err) {
+
+    console.log("rename error");
+  })
+
+// var resultssource = fs.createReadStream(''+req.file.path)
+// var resultsdest = fs.createWriteStream('uploads/'+(new Date().toISOString() )+".txt")
+
+// resultssource.pipe(resultsdest);
+
+
+// resultssource.on('end', function() {
+//    fs.unlink(req.file.path, function() {
+
+//      console.log("deleted temporary file");
+//     })
+
+//  console.log("Finished saving");
+
+// }  )
+
+
+
+// resultssource.on('error', function(err) {
+
+
+//  console.log("error :" +err);
+
+
+//}  )
+
  // console.log(req.file);
 
    res.send("ok")
