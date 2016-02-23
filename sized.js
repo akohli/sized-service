@@ -1,4 +1,4 @@
-/ sized.js - web service to return data of specific size
+// sized.js - web service to return data of specific size
 // usage: (eg curl)
 // curl -verbose localhost:8001/sized/1mb
 // curl -verbose localhost:8001/sized/5k
