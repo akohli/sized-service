@@ -22,9 +22,9 @@ var fs = require('fs');
 var http = require('http');
 var https = require('https')
 
-var keystore = fs.readFileSync('certs/certs.config');
-var passphrase = fs.readFileSync('config/config', 'utf8');
-var credentials = {pfx: keystore, passphrase: passphrase};
+//var keystore = fs.readFileSync('certs/certs.config');
+//var passphrase = fs.readFileSync('config/config', 'utf8');
+//var credentials = {pfx: keystore, passphrase: passphrase};
 
 
 
@@ -82,7 +82,7 @@ app.post('/resultsupload', type , function (req, res, next) {
 // req.file //is the `avatar` file
 // req.body will hold the text fields, if there were any
 //console.log(req.file.path);
-fs.rename(''+req.file.path ,'uploads/'+(new Date().toISOString() )+".txt" , function(err) {
+fs.rename(''+req.file.path ,'uploads/'+(new Date().toISOString() )+".csv" , function(err) {
    // console.log("Rename");
   })
    res.send("ok")
