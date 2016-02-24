@@ -11,35 +11,22 @@ var express = require('express')
 
 var multer = require('multer')
 var upload = multer({dest : 'uploads/'})
-
 var bodyParser = require('body-parser')
-
 var type = upload.single('upload');
-
 var app = express()
-
-
-
-
-
 
 
 var fs = require('fs');
 var http = require('http');
-//var https = require('https')
+var https = require('https')
 
-//var keystore = fs.readFileSync('certs/certs.config');
-//var passphrase = fs.readFileSync('config/config', 'utf8');
-//var credentials = {pfx: keystore, passphrase: passphrase};
-
-
+var keystore = fs.readFileSync('certs/certs.config');
+var passphrase = fs.readFileSync('config/config', 'utf8');
+var credentials = {pfx: keystore, passphrase: passphrase};
 
 
 var listen_port_http = 8001
 var listen_port_https = 9001
-
-
-
 // specification for creating the buffer hashtable, there must be
 // a better way
 //
@@ -91,52 +78,23 @@ app.get('/sized/:sz', function (request, response) {
 
 
 app.post('/resultsupload', type , function (req, res, next) {
-//  req.file //is the `avatar` file
+// req.file //is the `avatar` file
 // req.body will hold the text fields, if there were any
-
-console.log(req.file.path);
-
+//console.log(req.file.path);
 fs.rename(''+req.file.path ,'uploads/'+(new Date().toISOString() )+".txt" , function(err) {
 
-    console.log("rename error");
+   // console.log("Rename");
   })
 
-// var resultssource = fs.createReadStream(''+req.file.path)
-// var resultsdest = fs.createWriteStream('uploads/'+(new Date().toISOString() )+".txt")
-
-// resultssource.pipe(resultsdest);
-
-
-// resultssource.on('end', function() {
-//    fs.unlink(req.file.path, function() {
-
-//      console.log("deleted temporary file");
-//     })
-
-//  console.log("Finished saving");
-
-// }  )
-
-
-
-// resultssource.on('error', function(err) {
-
-
-//  console.log("error :" +err);
-
-
-//}  )
-
- // console.log(req.file);
 
    res.send("ok")
 })
 
 
 var httpServer = http.createServer(app);
-//var httpsServer = https.createServer(credentials, app);
+var httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(listen_port_http);
-//httpsServer.listen(listen_port_https);
+httpsServer.listen(listen_port_https);
 
 console.log('Now listening port ' + listen_port_http + ' for http and port ' +listen_port_https+ ' for https ' )
