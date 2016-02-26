@@ -82,11 +82,39 @@ app.post('/resultsupload', type , function (req, res, next) {
 // req.file //is the `avatar` file
 // req.body will hold the text fields, if there were any
 //console.log(req.file.path);
-fs.rename(''+req.file.path ,'uploads/'+(new Date().toISOString() )+".csv" , function(err) {
-   // console.log("Rename");
-  })
-   res.send("ok")
+console.log(req.file.mimetype);
+
+
+if(req.file.mimetype == "text/plain")
+{
+
+      storefile(req.file, req.file.path)
+       res.send("ok")
+}
+else
+{
+     res.send("bad file")
+}
 })
+
+
+
+
+function renamefile (filename) {
+
+  var newname = (new Date().toISOString() )+".csv";
+fs.rename(''+filename ,'uploads/'+newname , function(err) {
+   // console.log("Rename");
+
+ 
+    })
+
+
+  return newname;
+
+}
+
+
 
 
 
@@ -94,6 +122,7 @@ fs.rename(''+req.file.path ,'uploads/'+(new Date().toISOString() )+".csv" , func
 module.exports.iec_bytes = iec_bytes
 module.exports.iec_buffer = iec_buffer
 module.exports.process_size = process_size
+module.exports.renamefile = renamefile
 
 // TODO - protect via a command line switch
 //
