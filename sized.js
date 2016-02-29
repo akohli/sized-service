@@ -22,9 +22,9 @@ var fs = require('fs');
 var http = require('http');
 var https = require('https')
 
-//var keystore = fs.readFileSync('certs/certs.config');
-//var passphrase = fs.readFileSync('config/config', 'utf8');
-//var credentials = {pfx: keystore, passphrase: passphrase};
+var keystore = fs.readFileSync('certs/certs.config');
+var passphrase = fs.readFileSync('config/config', 'utf8');
+var credentials = {pfx: keystore, passphrase: passphrase};
 
 
 
@@ -100,7 +100,7 @@ else
 
 
 
-function renamefile (filename ,) {
+function renamefile (filename) {
 
   var newname = (new Date().toISOString() )+".csv";
 fs.rename(''+filename ,'uploads/'+newname , function(err) {
@@ -128,9 +128,9 @@ module.exports.renamefile = renamefile
 app.get('/sized/:sz', process_size)
 
 var httpServer = http.createServer(app);
-//var httpsServer = https.createServer(credentials, app);
+var httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(listen_port_http);
-//httpsServer.listen(listen_port_https);
+httpsServer.listen(listen_port_https);
 
-console.log('Now listening port ' + listen_port_http + 'for http and port' +listen_port_https+ 'for https' )
+console.log('Now listening port ' + listen_port_http + ' for http and port ' +listen_port_https+ ' for https ' )
