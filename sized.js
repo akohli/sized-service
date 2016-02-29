@@ -17,7 +17,6 @@ var bodyParser = require('body-parser')
 var type = upload.single('upload');
 
 
-
 var fs = require('fs');
 var http = require('http');
 var https = require('https')
@@ -25,8 +24,6 @@ var https = require('https')
 var keystore = fs.readFileSync('certs/certs.config');
 var passphrase = fs.readFileSync('config/config', 'utf8');
 var credentials = {pfx: keystore, passphrase: passphrase};
-
-
 
 
 var listen_port_http = 8001
@@ -79,44 +76,36 @@ function process_size (request, response) {
 }
 
 app.post('/resultsupload', type , function (req, res, next) {
-// req.file //is the `avatar` file
-// req.body will hold the text fields, if there were any
-//console.log(req.file.path);
-console.log(req.file.mimetype);
+  // req.file //is the `avatar` file
+  // req.body will hold the text fields, if there were any
+  //console.log(req.file.path);
+  console.log(req.file.mimetype);
 
 
-if(req.file.mimetype == "text/csv")
-{
+  if(req.file.mimetype == "text/csv")
+  {
 
-      storefile(req.file, req.file.path)
-       res.send("ok")
-}
-else
-{
-     res.send("invalid mime type")
-}
+        storefile(req.file, req.file.path)
+        res.send("ok")
+  }
+  else
+  {
+        res.send("invalid mime type")
+  }
 })
-
 
 
 
 function renamefile (filename) {
 
   var newname = (new Date().toISOString() )+".csv";
-fs.rename(''+filename ,'uploads/'+newname , function(err) {
+  fs.rename(''+filename ,'uploads/'+newname , function(err) {
    // console.log("Rename");
 
  
     })
-
-
   return newname;
-}
-
-
-
-
-
+  }
 
 module.exports.iec_bytes = iec_bytes
 module.exports.iec_buffer = iec_buffer
