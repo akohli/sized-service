@@ -2,7 +2,15 @@ var should = require('chai').should(),
   _ = require("lodash"),
   iec_bytes = require("../sized").iec_bytes,
   iec_buffer = require("../sized").iec_buffer,
+  renamefile = require("../sized").renamefile,
+
+
   sized = require("../sized")
+
+
+  var fs = require('fs');
+
+  var watch
 
   // iec_bytes = require('../sized').iec_bytes
   // iec_buffer = require('../sized').iec_bytes
@@ -44,5 +52,28 @@ describe('sized buffer returned', function() {
     iec_buffer('51KiB').length.should.equal(51*1024)
 //    iecnv.iec_buffer('5 MiB').length.should.equal(5*1024*1024)
   })
-  
+
+
+})
+
+
+describe('file saving', function() {
+    it ('written file matches, original file', function() {
+    //prepares the file to test the function by placing a copy in uploads
+      var source = fs.createReadStream('test.csv');
+      var dest = fs.createWriteStream('uploads/test.csv');
+      source.pipe(dest);
+      source.on('end', function() { /* copied */ });
+      source.on('error', function(err) { /* error */ });
+
+      fs.watch("uploads/test.csv",function()
+      {
+        var newname = renamefile("uploads/test.csv");
+        var originalfile = fs.readFileSync('test.csv').toString();
+        var renamedfile = fs.readFileSync('uploads/'+newname).toString();  
+        renamedfile.should.equal(originalfile)
+      }
+  ,null)
+
+  })
 })

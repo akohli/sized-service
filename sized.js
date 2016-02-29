@@ -11,6 +11,11 @@ var express = require('express'),
   _ = require('lodash')
 
 
+var multer = require('multer')
+var upload = multer({dest : 'uploads/'})
+var bodyParser = require('body-parser')
+var type = upload.single('upload');
+
 
 var fs = require('fs');
 var http = require('http');
@@ -19,8 +24,6 @@ var https = require('https')
 var keystore = fs.readFileSync('certs/certs.config');
 var passphrase = fs.readFileSync('config/config', 'utf8');
 var credentials = {pfx: keystore, passphrase: passphrase};
-
-
 
 
 var listen_port_http = 8001
@@ -72,9 +75,42 @@ function process_size (request, response) {
   }
 }
 
+app.post('/resultsupload', type , function (req, res, next) {
+  // req.file //is the `avatar` file
+  // req.body will hold the text fields, if there were any
+  //console.log(req.file.path);
+  console.log(req.file.mimetype);
+
+
+  if(req.file.mimetype == "text/csv")
+  {
+
+        storefile(req.file, req.file.path)
+        res.send("ok")
+  }
+  else
+  {
+        res.send("invalid mime type")
+  }
+})
+
+
+
+function renamefile (filename) {
+
+  var newname = (new Date().toISOString() )+".csv";
+  fs.rename(''+filename ,'uploads/'+newname , function(err) {
+   // console.log("Rename");
+
+ 
+    })
+  return newname;
+  }
+
 module.exports.iec_bytes = iec_bytes
 module.exports.iec_buffer = iec_buffer
 module.exports.process_size = process_size
+module.exports.renamefile = renamefile
 
 // TODO - protect via a command line switch
 //
@@ -86,4 +122,4 @@ var httpsServer = https.createServer(credentials, app);
 httpServer.listen(listen_port_http);
 httpsServer.listen(listen_port_https);
 
-console.log('Now listening port ' + listen_port_http + 'for http and port' +listen_port_https+ 'for https' )
+console.log('Now listening port ' + listen_port_http + ' for http and port ' +listen_port_https+ ' for https ' )
