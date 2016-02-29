@@ -85,7 +85,7 @@ app.post('/resultsupload', type , function (req, res, next) {
 console.log(req.file.mimetype);
 
 
-if(req.file.mimetype == "text/plain")
+if(req.file.mimetype == "text/csv")
 {
 
       storefile(req.file, req.file.path)
@@ -93,14 +93,14 @@ if(req.file.mimetype == "text/plain")
 }
 else
 {
-     res.send("bad file")
+     res.send("invalid mime type")
 }
 })
 
 
 
 
-function renamefile (filename) {
+function renamefile (filename ,) {
 
   var newname = (new Date().toISOString() )+".csv";
 fs.rename(''+filename ,'uploads/'+newname , function(err) {
@@ -111,7 +111,6 @@ fs.rename(''+filename ,'uploads/'+newname , function(err) {
 
 
   return newname;
-
 }
 
 
